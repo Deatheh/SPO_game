@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат магии</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <div>
+            <h1>Чат магии</h1>
+            <div>Время: <span id="timer">30</span> с</div>
+        </div>
+
+        <!-- Чат -->
+        <div id="chatBox">
+            <!-- Сообщения появляются здесь -->
+        </div>
+
+        <!-- Поле ввода -->
+        <div>
+            <form id="spellForm">
+                <input 
+                    type="text" 
+                    id="spellInput" 
+                    placeholder="Вы колдуете..."
+                    autocomplete="off"
+                >
+                <button type="submit" id="send">✨</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
