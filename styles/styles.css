@@ -1,7 +1,7 @@
 /* Общие стили */
 @font-face {
     font-family: Preciosa;
-    src: url(/styles/Preciosa.ttf);
+    src: url(../styles/Preciosa.ttf);
 }
 
 * {
@@ -138,7 +138,7 @@ main {
     display: grid;
     row-gap: 5rem;
 
-    background-image: url(/pics/palyanka.png);
+    background-image: url(../pics/palyanka.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
