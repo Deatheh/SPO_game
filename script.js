@@ -3,6 +3,9 @@ const spellForm = document.getElementById('spellForm');
 const spellInput = document.getElementById('spellInput');
 const timerDisplay = document.getElementById('timer');
 const sendMessage = document.getElementById('send');
+const bossProgress = document.getElementById('bossProgress');
+const playerProgress = document.getElementById('playerProgress');
+
 
 let timeLeft = 30; // Начальное значение таймера
 let gameActive = true; // Игра активна
@@ -25,7 +28,6 @@ function initGame() {
 function startTimer() {
     const timerInterval = setInterval(() => {
         timeLeft--; // Уменьшение на 1
-        timerDisplay.style.color = "black";
         timerDisplay.textContent = timeLeft;
 
         // ПРОВЕРКА: если осталось 5 секунд или меньше, то сделать цвет таймера красным
@@ -40,7 +42,7 @@ function startTimer() {
             spellInput.disabled = true; // Поле ввода неактивно
             sendMessage.disabled = true; // Кнопка отправки неактивна
             addBossMessage('Ты тратишь моё время. И свою никчёмную жизнь. Такой бездарь мне не соперник.');
-            spellInput.placeholder = 'Надежды нет...';
+            spellInput.value = 'Надежды нет...🩸';
             sendMessage.textContent = '💔';
         }
     }, 1000);
@@ -81,6 +83,7 @@ function addPlayerMessage(text) {
 
     // Автоматическая прокрутка чата вниз
     chatBox.scrollTop = chatBox.scrollHeight;
+    randomHealth(); // Случайное изменение здоровья. Заглушка.
 }
 
 // Добавление сообщения босса в чат
@@ -95,6 +98,12 @@ function addBossMessage(text) {
     `;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Функция расчёта случайного изменения здоровья сущностей
+function randomHealth() {
+    bossProgress.setAttribute("value", Math.ceil(Math.random()*100))
+    playerProgress.setAttribute("value", Math.ceil(Math.random()*100))
 }
 
 // Случайный ответ босса (заглушка)
@@ -117,11 +126,11 @@ function getRandomBossResponse() {
         'Из тебя получился бы прекрасный труп.',
         'Ты позоришь свою корову.',
         'Жалок.',
-        'У тебя такое лицо, что только мать может любить. Хорошо хоть, она слепая.',
         'Я бы сказал, что тебя уронили на голову в детстве.',
-        'Возможно ли, что твоя мать, охваченная дикой похотью, когда-то давно заигрывала с козлом?',
         'Есть предложение: ты перестаёшь колдовать, а я откусываю тебе голову быстро. Идёт?',
-        'Если ты бог среди людей, то люди — никто.'
+        'Если ты бог среди людей, то люди — никто.',
+        'Твоя мать самый худший бард, ведь ей понадобилось 9 месяцев на такую жалкую шутку.',
+        'Я бы мог оскорбить тебя, но природа это сделала за меня.'
     ];
 
     // Случайный выбор реплики

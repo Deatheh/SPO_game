@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Чат магии</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Project Spell</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="icon" href="/pics/favicon.ico" type="image/x-icon">
 </head>
+
 <body>
-    <div>
-        <div>
-            <h1>Чат магии</h1>
-            <div>Время: <span id="timer">30</span> с</div>
-        </div>
+    <main>
+        <section class="fightArea">
+            <article class="bossArea">
+                <progress id="bossProgress" max="100" value="100"></progress>
+                <img src="/pics/demani.png" style="width: 100%; max-height: 40vh; object-fit: contain;"
+                    alt="Великолепное изображение огромного страшного босса">
+            </article>
+            <article class="playerArea">
+                <progress id="playerProgress" max="100" value="100"></progress>
+                <img src="/pics/valshebni.png" style="width: 100%; max-height: 40vh; object-fit: contain;"
+                    alt="Великолепное изображение отважного красивого волшебника">
+            </article>
+        </section>
 
-        <!-- Чат -->
-        <div id="chatBox">
-            <!-- Сообщения появляются здесь -->
-        </div>
+        <section class="chatField">
+            <div class="chatHeader">
+                <h1>Чат магии</h1>
+                <div>Время: <span id="timer">30</span> с</div>
+            </div>
 
-        <!-- Поле ввода -->
-        <div>
-            <form id="spellForm">
-                <input 
-                    type="text" 
-                    id="spellInput" 
-                    placeholder="Вы колдуете..."
-                    autocomplete="off"
-                >
-                <button type="submit" id="send">✨</button>
+            <!-- Чат -->
+            <div class="chatBox" id="chatBox">
+                <!-- Сообщения появляются здесь -->
+            </div>
+
+            <!-- Поле ввода -->
+            <form class="spellForm" id="spellForm">
+                <input class="spellInput" type="text" id="spellInput" name="spell" placeholder="Вы колдуете..." autocomplete="off"
+                    onpaste="return false">
+                <button class="sendButton" type="submit" id="send">✨</button>
             </form>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
+
 </html>
