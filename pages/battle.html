@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Spell</title>
+    <link rel="stylesheet" href="../styles/battle.css">
+    <link rel="icon" href="../pics/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <main>
+        <section class="fightArea">
+            <article class="bossArea">
+                <progress id="bossProgress" max="100" value="100"></progress>
+                <img src="../pics/demani.png" style="width: 100%; max-height: 40vh; object-fit: contain;"
+                    alt="Великолепное изображение огромного страшного босса">
+            </article>
+            <article class="playerArea">
+                <progress id="playerProgress" max="100" value="100"></progress>
+                <img src="../pics/valshebni.png" style="width: 100%; max-height: 40vh; object-fit: contain;"
+                    alt="Великолепное изображение отважного красивого волшебника">
+            </article>
+        </section>
+
+        <section class="chatField">
+            <div class="chatHeader">
+                <h1>Чат магии</h1>
+                <div>Время: <span id="timer">30</span> с</div>
+            </div>
+
+            <!-- Чат -->
+            <div class="chatBox" id="chatBox">
+                <!-- Сообщения появляются здесь -->
+            </div>
+
+            <!-- Поле ввода -->
+            <form class="spellForm" id="spellForm">
+                <input class="spellInput" type="text" id="spellInput" name="spell" placeholder="Вы колдуете..."
+                    autocomplete="off" minlength="5" onpaste="return false">
+                <button class="sendButton" type="submit" id="send">✨</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="../scripts/battle_chat.js"></script>
+</body>
+
+</html>

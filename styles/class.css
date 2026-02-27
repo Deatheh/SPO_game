@@ -1,0 +1,54 @@
+@font-face {
+    font-family: Preciosa;
+    src: url(./Preciosa.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    font-family: Preciosa;
+}
+
+body {
+    background-image: url(../pics/palyanka.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+main {
+    height: 100vh;
+}
+
+
+main h1 {
+    font-size: 4rem;
+    color: white;
+    text-shadow: 1px 1px 10px black;
+    text-align: center;
+}
+.selection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 2rem;
+    align-items: center;
+}
+.card {
+    margin: 2rem 1rem;
+    border: 5px solid #311e12;
+    border-radius: 10px;
+    padding: 0.2rem 0.5rem;
+    color: white;
+    background-color: #453947;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.button {
+    height: 8rem;
+    width: 100%;
+    border: 3px solid #230446;
+    border-radius: 10px;
+    font-size: 3rem;
+    cursor: progress;
+}

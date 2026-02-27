@@ -5,46 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Spell</title>
-    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="./styles/lobby.css">
     <link rel="icon" href="./pics/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
     <main>
-        <section class="fightArea">
-            <article class="bossArea">
-                <progress id="bossProgress" max="100" value="100"></progress>
-                <img src="./pics/demani.png" style="width: 100%; max-height: 40vh; object-fit: contain;"
-                    alt="Великолепное изображение огромного страшного босса">
+        <h1>Список открытых лобби</h1>
+        <section class="lobby-list">
+            <article class="lobby-card">
+                <div>
+                    <h2>Битва крушителей черепов</h2>
+                    <p>Отсутсвует описание</p>
+                </div>
+                <button class="button" onclick="window.location.href='./pages/class.html'">Присоединиться</button>
             </article>
-            <article class="playerArea">
-                <progress id="playerProgress" max="100" value="100"></progress>
-                <img src="./pics/valshebni.png" style="width: 100%; max-height: 40vh; object-fit: contain;"
-                    alt="Великолепное изображение отважного красивого волшебника">
+            <article class="lobby-card">
+                <div>
+                    <h2>Поедатели червей заживо</h2>
+                    <p>Червечки вкусные, ням-ням</p>
+                </div>
+                <button class="button" onclick="window.location.href='./pages/class.html'">Присоединиться</button>
             </article>
-        </section>
-
-        <section class="chatField">
-            <div class="chatHeader">
-                <h1>Чат магии</h1>
-                <div>Время: <span id="timer">30</span> с</div>
-            </div>
-
-            <!-- Чат -->
-            <div class="chatBox" id="chatBox">
-                <!-- Сообщения появляются здесь -->
-            </div>
-
-            <!-- Поле ввода -->
-            <form class="spellForm" id="spellForm">
-                <input class="spellInput" type="text" id="spellInput" name="spell" placeholder="Вы колдуете..."
-                    autocomplete="off" minlength="5" onpaste="return false">
-                <button class="sendButton" type="submit" id="send">✨</button>
-            </form>
+            <article class="lobby-card">
+                <div>
+                    <h2>Что кричит немецкий программист? ZIP-файл!</h2>
+                    <p>Ахахахахахах, разрывная шутка в титле</p>
+                </div>
+                <button class="button" onclick="window.location.href='./pages/class.html'">Присоединиться</button>
+            </article>
         </section>
     </main>
-
-    <script src="script.js"></script>
 </body>
 
 </html>
