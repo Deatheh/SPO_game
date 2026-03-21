@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis
+    container_name: spo-redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - ./backend/redis-data:/data
+    command:
+      - "redis-server"
+      - "--maxmemory"
+      - "500mb"
+      - "--maxmemory-policy"
+      - "allkeys-lfu"
+      - "--requirepass"
+      - "$REDIS_PASSWORD"
+      - "--save"
+      - "100 1"
+      - "--dbfilename"
+      - "dump.rdb"
+      - "--dir"
+      - "/data"
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping"]
+      interval: 30s
+      retries: 5
+      timeout: 10s
+    restart: unless-stopped
