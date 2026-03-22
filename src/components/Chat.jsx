@@ -1,13 +1,15 @@
 // components/Chat.jsx
 import React, { useState, useRef, useEffect } from 'react';
+import { useWebSocket } from '../hooks/useWebSocket';
 import './common.css';
 
-const Chat = ({ messages: initialMessages = [] }) => {
-  const [messages, setMessages] = useState(initialMessages);
+const Chat = ({ roomCode, currentUser = 'Игрок' }) => {
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
+  
+  const wsUrl = `ws://${window.location.hostname}:8000/ws`;
+  const { messages, sendMessage, isConnected, error } = useWebSocket(wsUrl);
 
-  // Автоскролл к последнему сообщению
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -17,14 +19,22 @@ const Chat = ({ messages: initialMessages = [] }) => {
   }, [messages]);
 
   const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      setMessages([...messages, {
-        id: Date.now(),
-        user: 'Вы', // Здесь должен быть ник текущего пользователя
-        text: newMessage.trim(),
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }]);
-      setNewMessage('');
+    if (newMessage.trim() && isConnected) {
+      const messageToSend = {
+        author: currentUser,
+        message: newMessage.trim(),
+        time: Date.now()
+      };
+      
+      console.log('Sending message:', messageToSend);
+      const success = sendMessage(messageToSend);
+      if (success) {
+        setNewMessage('');
+      } else {
+        console.error('Failed to send message');
+      }
+    } else if (!isConnected) {
+      console.log('Cannot send: WebSocket not connected');
     }
   };
 
@@ -38,12 +48,24 @@ const Chat = ({ messages: initialMessages = [] }) => {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h3>Чат комнаты</h3>
+        <h3>Чат комнаты {roomCode && `(Код: ${roomCode})`}</h3>
+        <div className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`}>
+          {isConnected ? '● Подключено' : error ? '⚠️ Ошибка' : '○ Подключение...'}
+        </div>
       </div>
       
+      {error && (
+        <div className="chat-error">
+          Ошибка: {error}
+        </div>
+      )}
+      
       <div className="chat-messages">
+        {messages.length === 0 && (
+          <div className="empty-chat">Нет сообщений. Напишите что-нибудь!</div>
+        )}
         {messages.map(msg => (
-          <div key={msg.id} className={`chat-message ${msg.user === 'Вы' ? 'own-message' : ''}`}>
+          <div key={msg.id} className={`chat-message ${msg.user === currentUser ? 'own-message' : ''}`}>
             <div className="message-header">
               <span className="message-user">{msg.user}</span>
               <span className="message-time">{msg.time}</span>
@@ -60,9 +82,12 @@ const Chat = ({ messages: initialMessages = [] }) => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Введите сообщение..."
+          placeholder={isConnected ? "Введите сообщение..." : error ? "Ошибка подключения" : "Подключение к чату..."}
+          disabled={!isConnected}
         />
-        <button onClick={handleSendMessage}>Отправить</button>
+        <button onClick={handleSendMessage} disabled={!isConnected}>
+          Отправить
+        </button>
       </div>
     </div>
   );

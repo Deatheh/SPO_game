@@ -10,7 +10,6 @@ const LobbyPage = () => {
   const location = useLocation();
   const { roomCode } = useParams();
   
-  // Получаем данные из state, переданные при навигации
   const { isHost = false, lobbyData, playerData: initialPlayerData } = location.state || {};
   
   const [isClassModalOpen, setIsClassModalOpen] = useState(false);
@@ -42,7 +41,6 @@ const LobbyPage = () => {
 
   const handleStartGame = () => {
     if (isHost && playerData.class) {
-      // Переходим на страницу игры
       navigate(`/game/${roomCode}`, { 
         state: { 
           playerData,
@@ -135,10 +133,10 @@ const LobbyPage = () => {
       </div>
 
       <div className="lobby-right">
-        <Chat messages={[
-          { id: 1, user: 'Игрок1', text: 'Всем привет!', time: '12:34' },
-          { id: 2, user: 'Игрок2', text: 'Готовы?', time: '12:35' },
-        ]} />
+        <Chat 
+          roomCode={roomCode}
+          currentUser={playerData.nickname || 'Игрок'}
+        />
       </div>
     </div>
   );
