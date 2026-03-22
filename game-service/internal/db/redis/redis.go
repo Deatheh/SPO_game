@@ -2,7 +2,6 @@ package redis
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -81,29 +80,19 @@ func (cr *CacheRepository) GetAllKeys(ctx context.Context) ([]string, error) {
 }
 
 func (cr *CacheRepository) SetStruct(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
-	jsonData, err := json.Marshal(value)
-	if err != nil {
-		return err
-	}
-
-	err = cr.Set(ctx, key, string(jsonData), expiration)
+	err := cr.Set(ctx, key, value, expiration)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (cr *CacheRepository) GetStruct(ctx context.Context, key string) (interface{}, error) {
+func (cr *CacheRepository) GetStruct(ctx context.Context, key string) ([]byte, error) {
 	jsonDataStr, err := cr.Get(ctx, key)
+	fmt.Println(jsonDataStr)
 	if err != nil {
 		return nil, err
 	}
 	jsonData := []byte(jsonDataStr)
-
-	var structure interface{}
-	err = json.Unmarshal(jsonData, &structure)
-	if err != nil {
-		return nil, err
-	}
-	return structure, nil
+	return jsonData, nil
 }

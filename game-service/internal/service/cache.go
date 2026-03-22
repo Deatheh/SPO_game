@@ -34,7 +34,7 @@ func (cs CacheService) SetStruct(ctx context.Context, key string, structure inte
 	return err
 }
 
-func (cs CacheService) GetStruct(ctx context.Context, key string) (interface{}, error) {
+func (cs CacheService) GetStruct(ctx context.Context, key string) ([]byte, error) {
 	structure, err := cs.repository.GetStruct(ctx, key)
 
 	return structure, err

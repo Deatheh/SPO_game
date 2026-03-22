@@ -117,7 +117,7 @@ func (c *Client) writePump() {
 					return
 				}
 
-				err = c.handler.services.Cache.Set(c.context, strconv.Itoa(len(keys)), string(message), 3*time.Minute)
+				err = c.handler.services.Cache.SetStruct(c.context, strconv.Itoa(len(keys)), message, 3*time.Minute)
 				if err != nil {
 					return
 				}

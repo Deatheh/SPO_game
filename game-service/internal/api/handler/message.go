@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"magic-buttles/game-service/internal/entities"
 	"net/http"
@@ -16,15 +17,18 @@ func (h *Handler) GetCacheMessages(c *gin.Context) {
 	}
 
 	var mes entities.MessageArr
-	mes.Arr = make([]string, 0)
+	mes.Arr = make([]entities.MessageInfo, 0)
 
 	for _, k := range info {
-		m, err := h.services.Get(c, k)
+		m, err := h.services.GetStruct(c, k)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("error getting cache info: %s", err.Error())})
 			return
 		}
-		mes.Arr = append(mes.Arr, m)
+		fmt.Println(m)
+		var infoMes entities.MessageInfo
+		err = json.Unmarshal([]byte(m), &infoMes)
+		mes.Arr = append(mes.Arr, infoMes)
 	}
 
 	c.JSON(http.StatusOK, mes)

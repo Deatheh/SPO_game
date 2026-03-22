@@ -1,5 +1,10 @@
 package entities
 
 type MessageArr struct {
-	Arr []string `json:"arr"`
+	Arr []MessageInfo `json:"arr"`
+}
+
+type MessageInfo struct {
+	Author  string `json:"author"`
+	Message string `json:"message"`
 }

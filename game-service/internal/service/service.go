@@ -11,7 +11,7 @@ type Cache interface {
 	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error
 	Get(ctx context.Context, key string) (string, error)
 	SetStruct(ctx context.Context, key string, structure interface{}, expiration time.Duration) error
-	GetStruct(ctx context.Context, key string) (interface{}, error)
+	GetStruct(ctx context.Context, key string) ([]byte, error)
 	GetAllKeys(ctx context.Context) ([]string, error)
 	ClearCache() error
 }
