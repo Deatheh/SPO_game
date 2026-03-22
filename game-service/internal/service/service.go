@@ -10,8 +10,8 @@ import (
 type Cache interface {
 	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error
 	Get(ctx context.Context, key string) (string, error)
-	SetStructArray(ctx context.Context, key, mas interface{}, expiration time.Duration) error
-	GetStructArray(ctx context.Context, key interface{}) (interface{}, error)
+	SetStruct(ctx context.Context, key string, structure interface{}, expiration time.Duration) error
+	GetStruct(ctx context.Context, key string) (interface{}, error)
 	GetAllKeys(ctx context.Context) ([]string, error)
 	ClearCache() error
 }

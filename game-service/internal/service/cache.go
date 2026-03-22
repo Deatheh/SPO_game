@@ -28,16 +28,16 @@ func (cs CacheService) Get(ctx context.Context, key string) (string, error) {
 	return value, nil
 }
 
-func (cs CacheService) SetStructArray(ctx context.Context, key, mas interface{}, expiration time.Duration) error {
-	err := cs.repository.SetStructArray(ctx, key, mas, expiration)
+func (cs CacheService) SetStruct(ctx context.Context, key string, structure interface{}, expiration time.Duration) error {
+	err := cs.repository.SetStruct(ctx, key, structure, expiration)
 
 	return err
 }
 
-func (cs CacheService) GetStructArray(ctx context.Context, scheduleKey interface{}) (interface{}, error) {
-	mas, err := cs.repository.GetStructArray(ctx, scheduleKey)
+func (cs CacheService) GetStruct(ctx context.Context, key string) (interface{}, error) {
+	structure, err := cs.repository.GetStruct(ctx, key)
 
-	return mas, err
+	return structure, err
 }
 
 func (cs CacheService) GetAllKeys(ctx context.Context) ([]string, error) {

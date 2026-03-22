@@ -80,26 +80,30 @@ func (cr *CacheRepository) GetAllKeys(ctx context.Context) ([]string, error) {
 	return keys, nil
 }
 
-func (cr *CacheRepository) GetStructArray(ctx context.Context, scheduleKey interface{}) (interface{}, error) {
-	key, _ := json.Marshal(scheduleKey)
-	value, err := cr.Get(ctx, string(key))
-	if err != nil {
-		return nil, err
-	}
-	var mas []interface{}
-	_ = json.Unmarshal([]byte(value), &mas)
-
-	return mas, nil
-}
-
-func (cr *CacheRepository) SetStructArray(ctx context.Context, scheduleKey, mas interface{}, expiration time.Duration) error {
-	key, _ := json.Marshal(scheduleKey)
-	value, _ := json.Marshal(mas)
-
-	err := cr.Set(ctx, string(key), string(value), expiration)
+func (cr *CacheRepository) SetStruct(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
+	jsonData, err := json.Marshal(value)
 	if err != nil {
 		return err
 	}
 
+	err = cr.Set(ctx, key, string(jsonData), expiration)
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+func (cr *CacheRepository) GetStruct(ctx context.Context, key string) (interface{}, error) {
+	jsonDataStr, err := cr.Get(ctx, key)
+	if err != nil {
+		return nil, err
+	}
+	jsonData := []byte(jsonDataStr)
+
+	var structure interface{}
+	err = json.Unmarshal(jsonData, &structure)
+	if err != nil {
+		return nil, err
+	}
+	return structure, nil
 }
