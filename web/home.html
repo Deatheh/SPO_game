@@ -19,7 +19,7 @@ window.onload = function () {
 
     function addMessageToLog(message) {
         var item = document.createElement("div");
-        item.innerText = message;
+        item.innerText = message.author + ": " + message.message;
         appendLog(item);
     }
 
@@ -33,6 +33,7 @@ window.onload = function () {
             })
             .then(function(data) {
                 if (data && data.arr && Array.isArray(data.arr)) {
+                    data.arr.sort((a, b) => a.time - b.time);
                     data.arr.forEach(function(item, index) {
                         addMessageToLog(item);
                     });
@@ -58,6 +59,7 @@ window.onload = function () {
         messageInfo = {
             author: author,
             message: msg.value,
+            time: Date.now(),
         }
         conn.send(JSON.stringify(messageInfo));
         msg.value = "";
@@ -75,7 +77,8 @@ window.onload = function () {
             var messages = evt.data.split('\n');
             for (var i = 0; i < messages.length; i++) {
                 var item = document.createElement("div");
-                item.innerText = messages[i];
+                const jsonMessage = JSON.parse(messages[i]);
+                item.innerText = jsonMessage.author + ": " + jsonMessage.message;
                 appendLog(item);
             }
         };

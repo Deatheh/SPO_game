@@ -2,9 +2,10 @@ package handler
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -112,12 +113,10 @@ func (c *Client) writePump() {
 				w.Write(<-c.send)
 			}
 			go func() {
-				keys, err := c.handler.services.Cache.GetAllKeys(c.context)
-				if err != nil {
-					return
-				}
+				hash := sha256.Sum256([]byte(fmt.Sprintf("%v-%d", message, time.Now().UnixNano())))
+				key := fmt.Sprintf("message:%x", hash[:8])
 
-				err = c.handler.services.Cache.SetStruct(c.context, strconv.Itoa(len(keys)), message, 3*time.Minute)
+				err = c.handler.services.Cache.SetStruct(c.context, key, message, 3*time.Minute)
 				if err != nil {
 					return
 				}

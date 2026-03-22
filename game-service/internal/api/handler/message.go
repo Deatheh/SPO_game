@@ -25,7 +25,6 @@ func (h *Handler) GetCacheMessages(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("error getting cache info: %s", err.Error())})
 			return
 		}
-		fmt.Println(m)
 		var infoMes entities.MessageInfo
 		err = json.Unmarshal([]byte(m), &infoMes)
 		mes.Arr = append(mes.Arr, infoMes)

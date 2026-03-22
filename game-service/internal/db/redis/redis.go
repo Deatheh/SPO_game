@@ -89,7 +89,6 @@ func (cr *CacheRepository) SetStruct(ctx context.Context, key string, value inte
 
 func (cr *CacheRepository) GetStruct(ctx context.Context, key string) ([]byte, error) {
 	jsonDataStr, err := cr.Get(ctx, key)
-	fmt.Println(jsonDataStr)
 	if err != nil {
 		return nil, err
 	}

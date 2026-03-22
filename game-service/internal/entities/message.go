@@ -7,4 +7,5 @@ type MessageArr struct {
 type MessageInfo struct {
 	Author  string `json:"author"`
 	Message string `json:"message"`
+	Time    int    `json:"time"`
 }
