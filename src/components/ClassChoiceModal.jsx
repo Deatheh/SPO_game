@@ -10,14 +10,10 @@ const ClassChoiceModal = ({ isOpen, onClose, onConfirm, initialSelectedClass = n
 
   // Данные для классов с правильным путем к изображению волшебника
   const classes = [
-    { id: 1, title: 'Физик', description: 'Изучает материю и энергию'},
-    { id: 2, title: 'Химик', description: 'Преобразует вещества'},
-    { id: 3, title: 'Биолог', description: 'Исследует живое'},
-    { id: 4, title: 'Географ', description: 'Изучает Землю'},
-    { id: 5, title: 'Поэт', description: 'Владеет словом'},
-    { id: 6, title: 'Историк', description: 'Хранит прошлое'},
-    { id: 7, title: 'Программист', description: 'Пишет код'},
-    { id: 8, title: 'Математик', description: 'Царица наук'},
+    { id: 1, title: 'Изобретатель', description: 'Создаст всё'},
+    { id: 2, title: 'Aлхимик', description: 'Преобразует вещества'},
+    { id: 3, title: 'Рассказчик', description: 'Мастер слова'},
+    { id: 4, title: 'Жрец', description: 'Воскресит из мёртвых'},
   ];
 
   const validateNickname = (name) => {
