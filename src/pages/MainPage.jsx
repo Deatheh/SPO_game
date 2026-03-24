@@ -89,7 +89,7 @@ const MainPage = () => {
       <div className="content">
         <h1 className="game-title">Project Spell</h1>
         
-        <h2 className="lobby-list-title">Доступные лобби</h2>
+        <h2 className="lobby-list-title">Доступные игровые сессии</h2>
         
         <div className="lobby-list-container">
           <div className="lobby-list">
@@ -98,7 +98,7 @@ const MainPage = () => {
               className="create-lobby-button-inline"
               onClick={() => setIsCreateModalOpen(true)}
             >
-              + Создать новое лобби
+              + Создать новую игровую сессию
             </button>
 
             {/* Список лобби */}

@@ -28,7 +28,7 @@ const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
     <div className="modal-overlay">
       <div className="modal-content create-lobby-modal">
         <div className="modal-header">
-          <h2>Создание лобби</h2>
+          <h2>Создание игровой сессии</h2>
           <button className="close-button" onClick={onClose}>✕</button>
         </div>
         
