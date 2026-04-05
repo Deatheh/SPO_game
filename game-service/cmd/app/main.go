@@ -6,6 +6,7 @@ import (
 	"magic-buttles/game-service/internal/api/server"
 	"magic-buttles/game-service/internal/config"
 	"magic-buttles/game-service/internal/db"
+	"magic-buttles/game-service/internal/db/ai"
 	"magic-buttles/game-service/internal/db/redis"
 	"magic-buttles/game-service/internal/service"
 	"strconv"
@@ -27,7 +28,8 @@ func main() {
 	config.PrintConfigWithHiddenSecrets(envConf)
 
 	cache := redis.InitRedis(envConf)
-	repository := &db.Repository{Cache: cache}
+	ai := ai.InitAiServer(envConf)
+	repository := &db.Repository{Cache: cache, AI: ai}
 	services := service.NewService(repository, envConf)
 	handlers := handler.NewHandler(services, envConf)
 

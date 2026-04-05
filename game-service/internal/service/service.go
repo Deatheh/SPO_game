@@ -16,12 +16,18 @@ type Cache interface {
 	ClearCache() error
 }
 
+type AI interface {
+	Send(info string) (string, error)
+}
+
 type Service struct {
 	Cache
+	AI
 }
 
 func NewService(repository *db.Repository, envConf *config.Config) *Service {
 	return &Service{
 		Cache: CacheService{repository: repository.Cache},
+		AI:    AiService{repository: repository.AI},
 	}
 }

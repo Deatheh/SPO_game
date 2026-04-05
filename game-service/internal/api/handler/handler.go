@@ -47,5 +47,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		}
 		h.serveWs(c, hub)
 	})
+
+	r.POST("/ai_message", h.SendMessage)
 	return r
 }

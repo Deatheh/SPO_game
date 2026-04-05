@@ -18,9 +18,14 @@ type Redis struct {
 	Host     string
 }
 
+type GigaChat struct {
+	AuthKey string
+}
+
 type Config struct {
 	Application Application
 	Redis       Redis
+	GigaChat    GigaChat
 }
 
 func NewEnvConfig() *Config {
@@ -38,6 +43,9 @@ func NewEnvConfig() *Config {
 			Port:     os.Getenv("REDIS_PORT"),
 			Password: os.Getenv("REDIS_PASSWORD"),
 			Host:     os.Getenv("REDIS_HOST"),
+		},
+		GigaChat: GigaChat{
+			AuthKey: os.Getenv("GIGACHAT_AUTH_KEY"),
 		},
 	}
 }
@@ -59,4 +67,7 @@ func PrintConfigWithHiddenSecrets(config *Config) {
 	fmt.Printf("Host: %s\n", config.Redis.Host)
 	fmt.Printf("Port: %s\n", config.Redis.Port)
 	fmt.Printf("Password: %s\n", mask(config.Redis.Password))
+
+	fmt.Println("\n=== GigaChat Config ===")
+	fmt.Printf("Host: %s\n", mask(config.GigaChat.AuthKey))
 }

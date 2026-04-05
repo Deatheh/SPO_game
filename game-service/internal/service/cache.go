@@ -2,12 +2,12 @@ package service
 
 import (
 	"context"
-	redis2 "magic-buttles/game-service/internal/db/redis"
+	"magic-buttles/game-service/internal/db/redis"
 	"time"
 )
 
 type CacheService struct {
-	repository *redis2.CacheRepository
+	repository *redis.CacheRepository
 }
 
 func (cs CacheService) Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
