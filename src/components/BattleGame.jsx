@@ -4,18 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import demaniImage from '../pic/demani.png';
 import valshebniImage from '../pic/valshebni.png';
 import palyankaImage from '../pic/palyanka.png';
+import { useWebSocket } from '../hooks/useWebSocket';
+import { api } from '../hooks/aiMessage';
+
 
 const BattleGame = ({ onExit, playerData, roomCode }) => {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState([
-    { id: 1, user: 'Босс', text: 'Ты явился... Первый ход за тобой, мерзкий человечишка.', time: '21:59' }
-  ]);
   const [spellText, setSpellText] = useState('');
   const [timeLeft, setTimeLeft] = useState(30); // Устанавливаем 30 секунд
   const [gameActive, setGameActive] = useState(true); // Игра активна
   const [bossHealth, setBossHealth] = useState(100);
   const [playerHealth, setPlayerHealth] = useState(100);
   
+    const wsUrl = `ws://${window.location.hostname}:8000/ws`;
+    const { messages, sendMessage, isConnected, error } = useWebSocket(wsUrl);
+
+
   const chatBoxRef = useRef(null);
   const timerRef = useRef(null);
   const inputRef = useRef(null);
@@ -29,12 +33,6 @@ const BattleGame = ({ onExit, playerData, roomCode }) => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
   }, []); // Пустой массив зависимостей - выполняется один раз при монтировании
 
   // Автоскролл
@@ -42,7 +40,7 @@ const BattleGame = ({ onExit, playerData, roomCode }) => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, []);
 
   const startTimer = () => {
     // Сбрасываем таймер на 30 секунд
@@ -61,7 +59,6 @@ const BattleGame = ({ onExit, playerData, roomCode }) => {
           clearInterval(timerRef.current);
           setGameActive(false);
           addBossMessage('Ты тратишь моё время. И свою никчёмную жизнь. Такой бездарь мне не соперник.');
-          addBossMessage('Надежды нет...');
           return 0;
         }
         return prev - 1;
@@ -70,33 +67,77 @@ const BattleGame = ({ onExit, playerData, roomCode }) => {
   };
 
   const addPlayerMessage = (text) => {
-    setMessages(prev => [...prev, {
-      id: Date.now(),
-      user: playerData?.nickname || 'выван',
-      text: text,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }]);
+    const messageToSend = {
+        author: playerData.nickname,
+        message: spellText.trim(),
+        time: Date.now()
+    };
+
+    console.log('Sending message:', messageToSend);
+    const success = sendMessage(messageToSend);
+    if (!success) {
+      console.error('Failed to send message');
+    }
   };
 
   const addBossMessage = (text) => {
-    setMessages(prev => [...prev, {
-      id: Date.now() + 1,
-      user: 'Босс',
-      text: text,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }]);
+    const messageToSend = {
+        author: "Босс",
+        message: text,
+        time: Date.now()
+    };
+
+    console.log('Sending message:', messageToSend);
+    const success = sendMessage(messageToSend);
+    if (!success) {
+      console.error('Failed to send boss message');
+    }
   };
 
-  const handleSubmit = (e) => {
+  const getAIAnswer = async (userText) => {
+    const request = {
+      "users": [
+        {
+          "name": playerData.nickname,
+          "message": userText,
+          "class": playerData.class.title,
+          "hp": playerHealth
+        }
+      ],
+      "boss_hp": bossHealth,
+      "max_boss_hp": 100
+    };
+    
+    console.log(request);
+
+    try {
+        console.log('WE ARE GETTING STARTED✅')
+        const result = await api.postAIMessage(request);
+        console.log(result);
+        console.log('RESULT IS OK✅')
+        return result;
+    } catch (err) {
+        console.error(err);
+        alert("Failed to get AI answer");
+    }
+  }
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (spellText.trim() && gameActive) {
+    if (spellText.trim() && gameActive && isConnected) {
       addPlayerMessage(spellText);
+      document.getElementById("playerInput").disabled = true;
+      document.getElementById("playerSubmit").disabled = true;
+
+      const answer = await getAIAnswer(spellText);
+      console.log(answer);
       setSpellText('');
-      
-      // Случайное изменение здоровья
-      setBossHealth(Math.ceil(Math.random() * 100));
-      setPlayerHealth(Math.ceil(Math.random() * 100));
+
+      // Изменение здоровья
+      setBossHealth(answer.boss_hp);
+      setPlayerHealth(answer.users[0].hp);
       
       // Сброс таймера при отправке сообщения
       clearInterval(timerRef.current);
@@ -104,21 +145,11 @@ const BattleGame = ({ onExit, playerData, roomCode }) => {
       
       // Ответ босса
       setTimeout(() => {
-        addBossMessage(getRandomBossResponse());
+        addBossMessage(answer.message);
       }, 500);
+      document.getElementById("playerInput").disabled = false;
+      document.getElementById("playerSubmit").disabled = false;
     }
-  };
-
-  const getRandomBossResponse = () => {
-    const responses = [
-      'Ого, цветные огоньки! В цирке выступать будешь.',
-      'А... понял. Ты пытаешься меня утомить? Скукой?',
-      'Твоя магия воняет людским потом. Это отвратительно.',
-      'Попробуй еще раз, паразит!',
-      'Жалкий человечишка!',
-      'Твоя магия слаба, как ты сам!'
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
   };
 
   const handleExitGame = () => {
@@ -300,6 +331,7 @@ const BattleGame = ({ onExit, playerData, roomCode }) => {
             style={{ padding: '1.5rem' }}
           >
             <input
+              id='playerInput'
               ref={inputRef}
               type="text"
               value={spellText}
@@ -312,6 +344,7 @@ const BattleGame = ({ onExit, playerData, roomCode }) => {
               }}
             />
             <button
+              id='playerSubmit'
               type="submit"
               disabled={!gameActive}
               style={{
